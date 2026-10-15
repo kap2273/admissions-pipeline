@@ -10,6 +10,7 @@ services:
       - "5433:5432"
     volumes:
       - admissions_data:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
 
 volumes:
   admissions_data:

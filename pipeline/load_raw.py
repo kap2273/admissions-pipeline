@@ -9,9 +9,7 @@ def make_run_id():
 
 
 def load_raw(df, table, run_id, engine):
-    # 1. add a run_id column to df
     df["run_id"] = run_id
-    # 2. append df into the raw schema, into the given table
     df.to_sql(table, engine,schema="raw", if_exists="append", index=False)
 
 

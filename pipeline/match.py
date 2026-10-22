@@ -61,9 +61,15 @@ def assign_clusters(record_ids, pairs):
     return {r: find(parent, r) for r in record_ids}
 
 
+def save_clusters(clusters, engine):
+    df = pd.DataFrame(list(clusters.items()), columns=["record_id", "cluster_id"])
+    df.to_sql("clusters", engine, schema="stage", if_exists="replace", index=False)
+
+
 if __name__ == "__main__":
     engine = get_engine()
     pairs = find_pairs(engine)
     record_ids = pd.read_sql(text("SELECT record_id FROM stage.records"), engine)["record_id"]
     clusters = assign_clusters(record_ids, pairs)
+    save_clusters(clusters, engine)
     print(f"{len(record_ids)} records → {len(set(clusters.values()))} people")
